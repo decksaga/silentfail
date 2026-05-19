@@ -1,0 +1,26 @@
+{
+  "name": "mcp-scope",
+  "version": "1.0.0",
+  "description": "DevTools for your MCP servers. Scan, diagnose, and monitor your entire MCP setup.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-scope": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": ["mcp", "devtools", "debug", "monitor", "claude", "ai", "diagnostics"],
+  "author": "Santiago Gutierrez",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.22.0",
+    "typescript": "^5.7.0"
+  }
+}
