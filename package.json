@@ -1,11 +1,11 @@
 {
-  "name": "mcp-scope",
+  "name": "silentfail",
   "version": "1.0.0",
-  "description": "DevTools for your MCP servers. Scan, diagnose, and monitor your entire MCP setup.",
+  "description": "Your MCP servers are failing and you don't know it. Find out.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "mcp-scope": "./dist/index.js"
+    "silentfail": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",

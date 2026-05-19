@@ -90,7 +90,7 @@ function generateHTML(report: ScanReport): string {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MCP Scope — Dashboard</title>
+<title>SilentFail — Dashboard</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
@@ -414,7 +414,7 @@ function generateHTML(report: ScanReport): string {
   <div class="top-bar">
     <div class="logo">
       <div class="logo-icon">🔬</div>
-      <div class="logo-text"><span>MCP Scope</span></div>
+      <div class="logo-text"><span>SilentFail</span></div>
     </div>
     <div class="scan-time">Scanned ${report.timestamp.split("T")[0]} · ${report.scanDurationMs.toLocaleString()}ms</div>
   </div>
@@ -463,7 +463,7 @@ function generateHTML(report: ScanReport): string {
   </div>
 
   <div class="footer">
-    <a href="https://github.com/decksaga/mcp-scope">github.com/decksaga/mcp-scope</a>
+    <a href="https://github.com/decksaga/silentfail">github.com/decksaga/silentfail</a>
   </div>
 </body>
 </html>`

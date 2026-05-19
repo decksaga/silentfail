@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-// ─── MCP Scope ───
+// ─── SilentFail ───
 // DevTools for your MCP servers.
 //
 // Usage:
-//   npx mcp-scope              → Scan and show CLI report
-//   npx mcp-scope --test       → Also test each tool (calls them)
-//   npx mcp-scope --dashboard  → Open web dashboard
-//   npx mcp-scope --json       → Output raw JSON
+//   npx silentfail              → Scan and show CLI report
+//   npx silentfail --test       → Also test each tool (calls them)
+//   npx silentfail --dashboard  → Open web dashboard
+//   npx silentfail --json       → Output raw JSON
 
 import { discoverConfigs } from "./discovery.js"
 import { runScan } from "./scanner.js"
@@ -25,7 +25,7 @@ function printReport(report: ScanReport) {
   const line = "─".repeat(50)
 
   console.log("")
-  console.log(`  🔬 MCP Scope — Scan Report`)
+  console.log(`  🔬 SilentFail — Scan Report`)
   console.log(`  ${line}`)
   console.log("")
 
@@ -146,7 +146,7 @@ function printReport(report: ScanReport) {
 // ─── Main ───
 
 console.log("")
-console.log("  🔬 MCP Scope")
+console.log("  🔬 SilentFail")
 console.log("")
 
 // Step 1: Discover

@@ -332,7 +332,7 @@ async function scanServer(
       env: config.env ? { ...process.env, ...config.env } as Record<string, string> : undefined,
     })
 
-    const client = new Client({ name: "mcp-scope", version: "1.0.0" })
+    const client = new Client({ name: "silentfail", version: "1.0.0" })
 
     await Promise.race([
       client.connect(transport),
