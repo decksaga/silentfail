@@ -76,36 +76,23 @@
   <text x="28" y="185" font-family="'Courier New', monospace" font-size="10" fill="#f87171" opacity="0.18" letter-spacing="1" transform="rotate(-90, 28, 160)">ERR_MCP_TIMEOUT</text>
   <text x="1172" y="185" font-family="'Courier New', monospace" font-size="10" fill="#f87171" opacity="0.18" letter-spacing="1" transform="rotate(90, 1172, 160)">EXIT_CODE -1</text>
 
-  <!-- ═══ GLITCH EFFECT (no filters needed) ═══ -->
+  <!-- ═══ GLITCH EFFECT (GitHub-safe, no filters/clipPath) ═══ -->
 
   <!-- Glow ellipse behind FAIL portion -->
   <ellipse cx="730" cy="148" rx="200" ry="60" fill="url(#failglow)"/>
 
-  <!-- Glitch clone RED — offset left & up, clipped to top half -->
-  <g opacity="0.2">
-    <clipPath id="clip-top">
-      <rect x="0" y="0" width="1200" height="148"/>
-    </clipPath>
-    <text x="327" y="168" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#f87171" clip-path="url(#clip-top)">SILENTFAIL</text>
-  </g>
+  <!-- Glitch clone RED — offset left & up -->
+  <text x="327" y="165" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#f87171" opacity="0.18">SILENTFAIL</text>
 
-  <!-- Glitch clone BLUE — offset right & down, clipped to bottom half -->
-  <g opacity="0.12">
-    <clipPath id="clip-bot">
-      <rect x="0" y="148" width="1200" height="152"/>
-    </clipPath>
-    <text x="337" y="168" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#60a5fa" clip-path="url(#clip-bot)">SILENTFAIL</text>
-  </g>
+  <!-- Glitch clone BLUE — offset right & down -->
+  <text x="337" y="171" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#60a5fa" opacity="0.1">SILENTFAIL</text>
 
   <!-- Main title: SILENT (white) -->
   <text x="332" y="168" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#ffffff">SILENT</text>
 
-  <!-- Main title: FAIL (red with glow simulation) -->
-  <!-- Glow layer 1 (wide, faint) -->
-  <text x="722" y="168" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#f87171" opacity="0.15">FAIL</text>
-  <!-- Glow layer 2 (slight offset) -->
-  <text x="723" y="169" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#f87171" opacity="0.1">FAIL</text>
-  <!-- Main FAIL -->
+  <!-- Main title: FAIL (red with glow via layered text) -->
+  <text x="720" y="170" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#f87171" opacity="0.12">FAIL</text>
+  <text x="724" y="166" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#f87171" opacity="0.08">FAIL</text>
   <text x="722" y="168" font-family="'Courier New', monospace" font-size="90" font-weight="900" letter-spacing="11" fill="#f87171">FAIL</text>
 
   <!-- Horizontal tear line -->
@@ -120,15 +107,11 @@
     <tspan fill="#f87171" opacity="0.55"> you just don't know it yet.</tspan>
   </text>
 
-  <!-- Cursor blink -->
-  <rect x="783" y="193" width="2" height="14" fill="#f87171" opacity="0.8">
-    <animate attributeName="opacity" values="0.8;0;0.8" dur="1s" repeatCount="indefinite"/>
-  </rect>
+  <!-- Cursor -->
+  <rect x="783" y="193" width="2" height="14" fill="#f87171" opacity="0.7"/>
 
   <!-- Status bar bottom -->
-  <circle cx="42" cy="280" r="3.5" fill="#f87171" opacity="0.6">
-    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
-  </circle>
+  <circle cx="42" cy="280" r="3.5" fill="#f87171" opacity="0.5"/>
   <text x="52" y="283" font-family="'Courier New', monospace" font-size="9" fill="rgba(255,255,255,0.12)" letter-spacing="1">SCANNING 5 SERVERS...</text>
   <text x="1040" y="283" font-family="'Courier New', monospace" font-size="9" fill="rgba(255,255,255,0.12)" letter-spacing="1">github.com/decksaga/silentfail</text>
 
