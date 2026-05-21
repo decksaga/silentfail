@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+  <defs>
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.06"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="overlay"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glitch-r">
+      <feOffset dx="-3" dy="-1"/>
+      <feComponentTransfer>
+        <feFuncR type="identity"/>
+        <feFuncG type="linear" slope="0"/>
+        <feFuncB type="linear" slope="0"/>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="glitch-b">
+      <feOffset dx="3" dy="1"/>
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="0"/>
+        <feFuncG type="linear" slope="0"/>
+        <feFuncB type="identity"/>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+    </filter>
+    <linearGradient id="scanline" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(0,0,0,0.12)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.12)"/>
+    </linearGradient>
+    <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="4" fill="url(#scanline)"/>
+    </pattern>
+    <linearGradient id="topline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="15%" stop-color="#f87171"/>
+      <stop offset="40%" stop-color="#f87171"/>
+      <stop offset="42%" stop-color="transparent"/>
+      <stop offset="58%" stop-color="transparent"/>
+      <stop offset="60%" stop-color="#f87171"/>
+      <stop offset="85%" stop-color="#f87171"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <radialGradient id="dangerglow" cx="50%" cy="40%" r="40%">
+      <stop offset="0%" stop-color="#f87171" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="300" fill="#06070a"/>
+
+  <!-- Danger glow -->
+  <rect width="1200" height="300" fill="url(#dangerglow)"/>
+
+  <!-- Corrupt data blocks -->
+  <rect x="80" y="35" width="180" height="6" fill="#f87171" opacity="0.06"/>
+  <rect x="80" y="35" width="2" height="6" fill="#f87171" opacity="0.15"/>
+  <rect x="900" y="240" width="120" height="4" fill="#f87171" opacity="0.06"/>
+  <rect x="900" y="240" width="2" height="4" fill="#f87171" opacity="0.15"/>
+  <rect x="950" y="180" width="90" height="5" fill="#f87171" opacity="0.06"/>
+  <rect x="950" y="180" width="2" height="5" fill="#f87171" opacity="0.15"/>
+  <rect x="300" y="255" width="200" height="3" fill="#f87171" opacity="0.06"/>
+  <rect x="300" y="255" width="2" height="3" fill="#f87171" opacity="0.15"/>
+
+  <!-- Ghost hex data -->
+  <text x="40" y="30" font-family="monospace" font-size="9" fill="#f87171" opacity="0.08" letter-spacing="2">0x4641 494C 0000 DEAD BEEF 0x00 ERR_SILENT</text>
+  <text x="800" y="270" font-family="monospace" font-size="9" fill="#f87171" opacity="0.08" letter-spacing="2">TIMEOUT::NULL_RESPONSE::CONN_LOST</text>
+  <text x="700" y="288" font-family="monospace" font-size="9" fill="#f87171" opacity="0.08" letter-spacing="2">PID 0 SIGTERM EXIT_CODE -1</text>
+  <text x="900" y="55" font-family="monospace" font-size="9" fill="#f87171" opacity="0.08" letter-spacing="2">MCP::HANDSHAKE_FAIL</text>
+
+  <!-- Error tags on sides -->
+  <text x="35" y="160" font-family="monospace" font-size="10" fill="#f87171" opacity="0.15" letter-spacing="1" transform="rotate(-90, 35, 160)">ERR_MCP_TIMEOUT</text>
+  <text x="1170" y="160" font-family="monospace" font-size="10" fill="#f87171" opacity="0.15" letter-spacing="1" transform="rotate(90, 1170, 160)">EXIT_CODE -1</text>
+
+  <!-- Glitch clone RED (offset left-up) -->
+  <text x="327" y="158" font-family="monospace" font-size="86" font-weight="900" letter-spacing="12" filter="url(#glitch-r)" fill="#f87171" opacity="0.25">SILENTFAIL</text>
+
+  <!-- Glitch clone BLUE (offset right-down) -->
+  <text x="333" y="162" font-family="monospace" font-size="86" font-weight="900" letter-spacing="12" filter="url(#glitch-b)" fill="#60a5fa" opacity="0.15">SILENTFAIL</text>
+
+  <!-- Main title SILENT -->
+  <text x="330" y="160" font-family="monospace" font-size="86" font-weight="900" letter-spacing="12" fill="#ffffff">
+    <tspan>SILENT</tspan><tspan fill="#f87171" filter="url(#glow)">FAIL</tspan>
+  </text>
+
+  <!-- Horizontal tear line -->
+  <line x1="280" y1="148" x2="920" y2="148" stroke="#f87171" stroke-width="1" opacity="0.25"/>
+
+  <!-- Subtitle -->
+  <text x="600" y="200" font-family="sans-serif" font-size="14" font-weight="300" fill="rgba(255,255,255,0.3)" letter-spacing="3" text-anchor="middle">
+    <tspan>your mcp servers are failing.</tspan>
+    <tspan fill="#f87171" opacity="0.5"> you just don't know it yet.</tspan>
+  </text>
+
+  <!-- Cursor blink -->
+  <rect x="770" y="189" width="2" height="14" fill="#f87171" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0;0.7" dur="1s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- Status bar bottom -->
+  <circle cx="45" cy="280" r="3" fill="#f87171" opacity="0.5">
+    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <text x="55" y="283" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.1)" letter-spacing="1">SCANNING 5 SERVERS...</text>
+  <text x="1050" y="283" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.1)" letter-spacing="1">github.com/decksaga/silentfail</text>
+
+  <!-- Top red line -->
+  <rect x="0" y="0" width="1200" height="2" fill="url(#topline)" opacity="0.7"/>
+
+  <!-- Scanlines overlay -->
+  <rect width="1200" height="300" fill="url(#scanlines)" opacity="0.5"/>
+
+  <!-- Noise overlay -->
+  <rect width="1200" height="300" filter="url(#noise)" opacity="0.4"/>
+</svg>

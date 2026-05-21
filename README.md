@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=venom&color=0:0d1117,50:2a1a1a,100:f87171&height=200&section=header&text=SILENTFAIL&fontSize=70&fontColor=ffffff&animation=twinkling&stroke=f87171&strokeWidth=1" width="100%" />
+<img src="banner.svg" width="100%" alt="SILENTFAIL — Your MCP servers are failing. You just don't know it yet." />
 
 <br />
 
