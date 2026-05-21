@@ -12,7 +12,19 @@
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js"
   },
-  "keywords": ["mcp", "devtools", "debug", "monitor", "claude", "ai", "diagnostics"],
+  "keywords": ["mcp", "model-context-protocol", "devtools", "debug", "monitor", "claude", "ai", "diagnostics", "tokens", "schema", "cursor", "vscode", "windsurf"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/decksaga/silentfail.git"
+  },
+  "homepage": "https://github.com/decksaga/silentfail",
+  "bugs": {
+    "url": "https://github.com/decksaga/silentfail/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": ["dist", "README.md", "LICENSE"],
   "author": "Santiago Gutierrez",
   "license": "MIT",
   "dependencies": {

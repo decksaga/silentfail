@@ -9,8 +9,8 @@
 <p>
   <a href="https://github.com/decksaga/silentfail/stargazers"><img src="https://img.shields.io/github/stars/decksaga/silentfail?style=for-the-badge&color=f87171&labelColor=0d1117" /></a>
   <a href="https://github.com/decksaga/silentfail/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge&labelColor=0d1117" /></a>
-  <img src="https://img.shields.io/badge/Zero-Config-f87171?style=for-the-badge&labelColor=0d1117" />
-  <img src="https://img.shields.io/badge/One-Command-6ee7b7?style=for-the-badge&labelColor=0d1117" />
+  <a href="https://www.npmjs.com/package/silentfail"><img src="https://img.shields.io/badge/npx-silentfail-f87171?style=for-the-badge&labelColor=0d1117" /></a>
+  <img src="https://img.shields.io/badge/Zero_Config-6ee7b7?style=for-the-badge&labelColor=0d1117" />
 </p>
 
 </div>
@@ -19,18 +19,18 @@
 
 ## The problem
 
-You connect MCP servers to Claude. They break silently. No logs, no errors, no idea which one is slow, dead, or eating your context window.
+You connect MCP servers to Claude. They break silently — no logs, no errors, no idea which one is slow, dead, or eating your context window.
 
-Every tool you connect costs tokens before you even type. A bloated setup with 5 servers can burn 5,000+ tokens just in schemas — and you'd never know.
+Every tool you connect costs tokens **before you even type**. A bloated setup with 5 servers can burn **5,000+ tokens** just in schemas. And you'd never know.
 
-SilentFail finds out.
+**SilentFail finds out.**
 
 <br />
 
 ## One command
 
 ```bash
-silentfail --test
+npx silentfail --test
 ```
 
 ```
@@ -78,8 +78,6 @@ silentfail --test
     ✅ [market-pulse] Healthy and efficient. 8 tools, ~651 tokens.
 ```
 
-No web searches. No guessing. Just facts about your setup.
-
 <br />
 
 ## What it finds
@@ -97,26 +95,30 @@ No web searches. No guessing. Just facts about your setup.
 
 ## Smart tool testing
 
-SilentFail doesn't just check if servers respond. It calls each tool.
+SilentFail doesn't just check if servers respond. **It calls each tool.**
 
 It reads the schema and infers valid test inputs — `AAPL` for stocks, `USD`→`EUR` for forex, `bitcoin` for crypto. Then categorizes results:
 
-- **✅ Passed** — Works, returned data
-- **🔴 Broken** — Runtime error, tool is dead
-- **🟡 Input rejected** — Tool works, rejected test input (validation works correctly)
-- **⏭️ Skipped** — Couldn't infer params
-- **⏱️ Timeout** — Too slow
+| Status | Meaning |
+|:-------|:--------|
+| ✅ Passed | Works, returned data |
+| 🔴 Broken | Runtime error, tool is dead |
+| 🟡 Input rejected | Tool works, rejected test input (validation is fine) |
+| ⏭️ Skipped | Couldn't infer safe params |
+| ⏱️ Timeout | Took too long to respond |
 
-No false positives. If it says broken, it's broken.
+**No false positives.** If it says broken, it's broken.
 
 <br />
 
-## Setup
+## Quick start
 
 ```bash
-git clone https://github.com/decksaga/silentfail.git
-cd silentfail
-npm install
+# Install globally
+npm install -g silentfail
+
+# Or run directly with npx
+npx silentfail
 ```
 
 <br />
@@ -125,21 +127,21 @@ npm install
 
 ```bash
 # Quick scan — health + tokens + conflicts
-node dist/index.js
+silentfail
 
 # Full scan — tests every tool
-node dist/index.js --test
+silentfail --test
 
-# Web dashboard
-node dist/index.js --dashboard
+# Web dashboard with visual report
+silentfail --dashboard
 
-# JSON output
-node dist/index.js --json
+# JSON output for CI/automation
+silentfail --json
 ```
 
 <br />
 
-## Where it looks
+## Supported clients
 
 | Client | Config path |
 |:-------|:-----|
@@ -148,7 +150,21 @@ node dist/index.js --json
 | Cursor | `~/.cursor/mcp.json` |
 | VS Code | `~/.vscode/mcp.json` |
 | Windsurf | `~/.windsurf/mcp.json` |
-| Project | `./.mcp.json`, `./.claude/settings.json` |
+| Project-level | `./.mcp.json`, `./.claude/settings.json` |
+
+<br />
+
+## How it works
+
+```
+┌─────────────┐     ┌──────────────┐     ┌───────────────┐     ┌──────────────┐
+│  Discovery   │────▶│   Connect    │────▶│  Test Tools   │────▶│   Report     │
+│              │     │              │     │               │     │              │
+│ Find configs │     │ Spawn each   │     │ Infer params  │     │ CLI output   │
+│ across all   │     │ MCP server   │     │ from schema   │     │ Dashboard    │
+│ clients      │     │ via stdio    │     │ Call & verify  │     │ JSON export  │
+└─────────────┘     └──────────────┘     └───────────────┘     └──────────────┘
+```
 
 <br />
 
@@ -160,8 +176,8 @@ MIT — do whatever you want with it.
 
 <div align="center">
 
-Made by [@decksaga](https://github.com/decksaga)
+Built by [@decksaga](https://github.com/decksaga)
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:2a1a1a,100:f87171&height=100&section=footer" width="100%" />
+<sub>Stop guessing. Start scanning.</sub>
 
 </div>
