@@ -14,6 +14,42 @@ const args = process.argv.slice(2);
 const wantDashboard = args.includes("--dashboard") || args.includes("-d");
 const wantTest = args.includes("--test") || args.includes("-t");
 const wantJson = args.includes("--json");
+const wantHelp = args.includes("--help") || args.includes("-h");
+const wantVersion = args.includes("--version") || args.includes("-v");
+if (wantVersion) {
+    console.log("silentfail v1.0.0");
+    process.exit(0);
+}
+if (wantHelp) {
+    console.log(`
+  🔬 SilentFail — DevTools for your MCP servers
+
+  Usage:
+    silentfail              Scan all MCP configs — health, tokens, conflicts
+    silentfail --test       Also test each tool (calls them with inferred params)
+    silentfail --dashboard  Open a visual web dashboard with results
+    silentfail --json       Output raw JSON (for scripts/CI)
+
+  Options:
+    -t, --test        Test each tool by calling it
+    -d, --dashboard   Open web dashboard after scan
+    --json            Output JSON instead of CLI report
+    -h, --help        Show this help
+    -v, --version     Show version
+
+  Supported clients:
+    Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, project-level
+
+  Examples:
+    silentfail                 Quick health check
+    silentfail --test          Full scan with tool testing
+    silentfail --test --json   Full scan, JSON output
+    silentfail -d              Scan + open dashboard
+
+  https://github.com/decksaga/silentfail
+`);
+    process.exit(0);
+}
 // ─── CLI Report ───
 function printReport(report) {
     const line = "─".repeat(50);

@@ -9,7 +9,7 @@
 <p>
   <a href="https://github.com/decksaga/silentfail/stargazers"><img src="https://img.shields.io/github/stars/decksaga/silentfail?style=for-the-badge&color=f87171&labelColor=0d1117" /></a>
   <a href="https://github.com/decksaga/silentfail/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge&labelColor=0d1117" /></a>
-  <a href="https://www.npmjs.com/package/silentfail"><img src="https://img.shields.io/badge/npx-silentfail-f87171?style=for-the-badge&labelColor=0d1117" /></a>
+  <img src="https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&labelColor=0d1117&logo=typescript&logoColor=white" />
   <img src="https://img.shields.io/badge/Zero_Config-6ee7b7?style=for-the-badge&labelColor=0d1117" />
 </p>
 
@@ -30,7 +30,7 @@ Every tool you connect costs tokens **before you even type**. A bloated setup wi
 ## One command
 
 ```bash
-npx silentfail --test
+silentfail --test
 ```
 
 ```
@@ -114,11 +114,24 @@ It reads the schema and infers valid test inputs — `AAPL` for stocks, `USD`→
 ## Quick start
 
 ```bash
-# Install globally
-npm install -g silentfail
+git clone https://github.com/decksaga/silentfail.git
+cd silentfail
+npm install
+npm run build
+```
 
-# Or run directly with npx
-npx silentfail
+Then run it:
+
+```bash
+node dist/index.js           # Quick scan
+node dist/index.js --test    # Full scan + test tools
+```
+
+Or link it globally:
+
+```bash
+npm link
+silentfail --test
 ```
 
 <br />
@@ -137,6 +150,9 @@ silentfail --dashboard
 
 # JSON output for CI/automation
 silentfail --json
+
+# Help
+silentfail --help
 ```
 
 <br />

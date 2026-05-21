@@ -27,10 +27,16 @@ function estimateTokens(obj: unknown): number {
 function validateConfig(config: McpServerConfig): string | null {
   if (!config.command) return "No command specified"
 
-  // Check if command exists (for node/python, check the script path)
+  // Check if the script file exists (only for file paths, not package names)
   if (config.args?.length) {
     const scriptPath = config.args[0]
-    if (scriptPath && !scriptPath.startsWith("-") && !existsSync(resolve(scriptPath))) {
+    // Only check existence for paths that look like files (have / or \ or end in .js/.ts/.py)
+    // Skip for: npx package names, flags, URLs, bare module names
+    const looksLikeFile = scriptPath &&
+      !scriptPath.startsWith("-") &&
+      (scriptPath.includes("/") || scriptPath.includes("\\") || /\.\w+$/.test(scriptPath))
+
+    if (looksLikeFile && !existsSync(resolve(scriptPath))) {
       return `Script not found: ${scriptPath}`
     }
   }

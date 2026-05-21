@@ -15,18 +15,28 @@ function generateHTML(report: ScanReport): string {
     const statusIcon = s.status === "ok" ? "●" : s.status === "timeout" ? "◐" : "○"
     const statusLabel = s.status.toUpperCase()
 
-    const toolRows = s.tools.map(t => `
-      <div class="tool-row">
-        <span class="tool-name">${t.name}</span>
-        <span class="tool-tokens">${t.schemaTokens} tok</span>
-      </div>
-    `).join("")
+    const toolRows = s.tools.map(t => {
+      const test = s.toolTests?.find(tt => tt.toolName === t.name)
+      const testBadge = test ? {
+        ok: '<span class="test-badge test-ok">✅ passed</span>',
+        error: '<span class="test-badge test-error">🔴 broken</span>',
+        input_error: '<span class="test-badge test-warn">🟡 input rejected</span>',
+        skipped: '<span class="test-badge test-skip">⏭️ skipped</span>',
+        timeout: '<span class="test-badge test-error">⏱️ timeout</span>',
+      }[test.status] ?? "" : ""
+
+      return `
+        <div class="tool-row">
+          <span class="tool-name">${t.name}</span>
+          <span class="tool-meta">${testBadge}<span class="tool-tokens">${t.schemaTokens} tok</span></span>
+        </div>`
+    }).join("")
 
     const toolSection = s.tools.length > 0 ? `
       <div class="tool-list">
         <div class="tool-header">
           <span>Tool</span>
-          <span>Schema Cost</span>
+          <span>Status / Cost</span>
         </div>
         ${toolRows}
       </div>
@@ -85,14 +95,39 @@ function generateHTML(report: ScanReport): string {
       `
     }).join("")
 
+  // Recommendations section
+  const recsSection = report.recommendations.length > 0 ? `
+    <div class="section">
+      <h2 class="section-title">💡 Recommendations</h2>
+      <p class="section-desc">Actionable suggestions based on your scan results.</p>
+      ${report.recommendations.map(r => {
+        const icon = { critical: "🔴", warning: "🟡", info: "💬", ok: "✅" }[r.type]
+        const borderColor = { critical: "rgba(248,113,113,0.2)", warning: "rgba(251,191,36,0.15)", info: "rgba(255,255,255,0.06)", ok: "rgba(110,231,183,0.15)" }[r.type]
+        const bgColor = { critical: "rgba(248,113,113,0.04)", warning: "rgba(251,191,36,0.03)", info: "rgba(255,255,255,0.02)", ok: "rgba(110,231,183,0.03)" }[r.type]
+        return `
+          <div class="rec-row" style="background: ${bgColor}; border: 1px solid ${borderColor}">
+            <span class="rec-icon">${icon}</span>
+            <div class="rec-content">
+              <span class="rec-server">[${r.server}]</span> ${r.message}
+              ${r.action ? `<div class="rec-action">→ ${r.action}</div>` : ""}
+            </div>
+          </div>`
+      }).join("")}
+    </div>
+  ` : ""
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SilentFail scan results — MCP server diagnostics">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
 <title>SilentFail — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -324,6 +359,24 @@ function generateHTML(report: ScanReport): string {
     color: rgba(255, 255, 255, 0.4);
   }
 
+  .tool-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .test-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .test-ok { background: rgba(110, 231, 183, 0.1); color: #6ee7b7; }
+  .test-error { background: rgba(248, 113, 113, 0.1); color: #f87171; }
+  .test-warn { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
+  .test-skip { background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.4); }
+
   .no-tools {
     padding: 12px 0;
     font-size: 13px;
@@ -408,6 +461,37 @@ function generateHTML(report: ScanReport): string {
   }
 
   .footer a:hover { color: #a78bfa; }
+
+  /* ─── Recommendations ─── */
+  .rec-row {
+    display: flex;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    align-items: flex-start;
+  }
+
+  .rec-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  .rec-content {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+  }
+
+  .rec-server {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+  }
+
+  .rec-action {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+  }
 </style>
 </head>
 <body>
@@ -452,6 +536,8 @@ function generateHTML(report: ScanReport): string {
     ` : ""}
 
     ${conflictSection}
+
+    ${recsSection}
 
     <div class="section">
       <h2 class="section-title">🖥️ Servers</h2>

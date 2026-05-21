@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "banner",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "4444", "-s", "."],
+      "port": 4444
+    }
+  ]
+}
