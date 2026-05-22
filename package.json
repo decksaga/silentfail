@@ -1,18 +1,19 @@
 {
   "name": "silentfail",
   "version": "1.0.0",
-  "description": "Your MCP servers are failing and you don't know it. Find out.",
+  "description": "Diagnose MCP servers — health checks, token audits, security scanning. CLI + MCP server mode.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
     "silentfail": "./dist/index.js"
   },
+  "mcpServer": "./dist/server.js",
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js"
   },
-  "keywords": ["mcp", "model-context-protocol", "devtools", "debug", "monitor", "claude", "ai", "diagnostics", "tokens", "schema", "cursor", "vscode", "windsurf"],
+  "keywords": ["mcp", "model-context-protocol", "devtools", "debug", "monitor", "claude", "ai", "diagnostics", "tokens", "schema", "cursor", "vscode", "windsurf", "security", "prompt-injection"],
   "repository": {
     "type": "git",
     "url": "https://github.com/decksaga/silentfail.git"

@@ -5,6 +5,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { runSecurityScan } from "./security.js";
 // ~4 characters per token for JSON schemas
 function estimateTokens(obj) {
     const str = JSON.stringify(obj);
@@ -373,7 +374,11 @@ export async function runScan(sources, options = {}) {
     const seen = new Set();
     for (const source of sources) {
         for (const [name, config] of Object.entries(source.servers)) {
-            const key = `${config.command}:${(config.args ?? []).join(",")}`;
+            // Skip self to avoid recursive scan
+            const argsStr = (config.args ?? []).join(" ");
+            if (name === "silentfail" || argsStr.includes("silentfail/dist/server"))
+                continue;
+            const key = `${config.command}:${argsStr.replace(/ /g, ",")}`;
             if (seen.has(key))
                 continue;
             seen.add(key);
@@ -395,6 +400,7 @@ export async function runScan(sources, options = {}) {
     }
     const conflicts = findConflicts(servers);
     const recommendations = generateRecommendations(servers);
+    const security = runSecurityScan(servers);
     return {
         timestamp: new Date().toISOString(),
         configSources: sources,
@@ -404,6 +410,7 @@ export async function runScan(sources, options = {}) {
         totalTools: servers.reduce((sum, s) => sum + s.tools.length, 0),
         totalSchemaTokens: servers.reduce((sum, s) => sum + s.totalSchemaTokens, 0),
         scanDurationMs: Date.now() - start,
+        security,
     };
 }
 //# sourceMappingURL=scanner.js.map

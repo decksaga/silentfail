@@ -22,7 +22,10 @@ const wantHelp = args.includes("--help") || args.includes("-h")
 const wantVersion = args.includes("--version") || args.includes("-v")
 
 if (wantVersion) {
-  console.log("silentfail v1.0.0")
+  const { createRequire } = await import("node:module")
+  const require = createRequire(import.meta.url)
+  const pkg = require("../package.json")
+  console.log(`silentfail v${pkg.version}`)
   process.exit(0)
 }
 
@@ -178,6 +181,41 @@ function printReport(report: ScanReport) {
       }
     }
     console.log("")
+  }
+
+  // ─── Security ───
+  if (report.security) {
+    const sec = report.security
+    const riskColors: Record<string, string> = {
+      clean: "✅", low: "🟢", medium: "🟡", high: "🟠", critical: "🔴"
+    }
+
+    console.log(`  🛡️  SECURITY SCAN`)
+    console.log(`  ${line}`)
+    console.log(`  Risk level: ${riskColors[sec.riskLevel] ?? ""} ${sec.riskLevel.toUpperCase()}`)
+    console.log(`  Scanned: ${sec.scannedServers} server(s), ${sec.scannedTools} tool(s)`)
+    console.log("")
+
+    if (sec.findings.length === 0) {
+      console.log(`    ✅ No security issues detected.`)
+      console.log("")
+    } else {
+      console.log(`    Found ${sec.findings.length} issue(s):`)
+      console.log("")
+
+      const sevIcon: Record<string, string> = {
+        critical: "🔴", high: "🟠", medium: "🟡", low: "🔵"
+      }
+
+      for (const f of sec.findings) {
+        const toolStr = f.tool ? ` → ${f.tool}` : ""
+        console.log(`    ${sevIcon[f.severity]} [${f.severity.toUpperCase()}] ${f.server}${toolStr}`)
+        console.log(`      ${f.message}`)
+        console.log(`      Evidence: "${f.evidence.slice(0, 80)}"`)
+        console.log(`      → ${f.recommendation}`)
+        console.log("")
+      }
+    }
   }
 }
 

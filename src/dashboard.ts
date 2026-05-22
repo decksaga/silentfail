@@ -123,6 +123,59 @@ function generateHTML(report: ScanReport): string {
       </div>`
   }).join("")
 
+  // ─── Security section ───
+  const sec = report.security
+  const securitySection = sec ? (() => {
+    const riskBadge: Record<string, [string, string]> = {
+      clean: ["CLEAN", "badge-green"],
+      low: ["LOW", "badge-muted"],
+      medium: ["MEDIUM", "badge-amber"],
+      high: ["HIGH", "badge-red"],
+      critical: ["CRITICAL", "badge-red"],
+    }
+    const [riskLabel, riskCls] = riskBadge[sec.riskLevel] ?? ["UNKNOWN", "badge-muted"]
+
+    const findingRows = sec.findings.map(f => {
+      const sevCls: Record<string, string> = { critical: "rec-critical", high: "rec-warning", medium: "rec-warning", low: "rec-info" }
+      const sevIcon: Record<string, string> = {
+        critical: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M3.6 15.4 10.3 4.2a2 2 0 0 1 3.4 0l6.7 11.2A2 2 0 0 1 18.7 18H5.3a2 2 0 0 1-1.7-2.6Z"/></svg>',
+        high: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+        medium: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+        low: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+      }
+      const toolStr = f.tool ? `<span class="sec-tool">${f.tool}</span>` : ""
+      return `
+        <div class="rec-row ${sevCls[f.severity] ?? "rec-info"}">
+          <div class="rec-icon">${sevIcon[f.severity] ?? sevIcon.low}</div>
+          <div class="rec-body">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <span class="rec-server">${f.server}</span>
+              ${toolStr}
+              <span class="badge ${f.severity === "critical" || f.severity === "high" ? "badge-red" : "badge-amber"}" style="font-size:9px;padding:2px 8px">${f.severity.toUpperCase()}</span>
+              <span class="badge badge-muted" style="font-size:9px;padding:2px 8px">${f.category.replace(/_/g, " ")}</span>
+            </div>
+            <p class="rec-msg">${f.message}</p>
+            <p class="rec-action" style="font-family:var(--mono);font-size:11px;opacity:0.6">Evidence: "${f.evidence.slice(0, 80)}"</p>
+            <p class="rec-action">→ ${f.recommendation}</p>
+          </div>
+        </div>`
+    }).join("")
+
+    return `
+      <div class="section">
+        <div class="section-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+          <h2 class="section-title" data-i18n="security">Security Scan</h2>
+          <span class="badge ${riskCls}" style="margin-left:8px">${riskLabel}</span>
+        </div>
+        <p class="section-desc" data-i18n="security_desc">Analyzed ${sec.scannedServers} server(s) and ${sec.scannedTools} tool(s) for malicious patterns.</p>
+        ${sec.findings.length === 0
+          ? '<div class="rec-row rec-ok"><div class="rec-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></div><div class="rec-body"><p class="rec-msg" data-i18n="no_security_issues">No security issues detected. All clear.</p></div></div>'
+          : findingRows
+        }
+      </div>`
+  })() : ""
+
   const scanDate = report.timestamp.split("T")[0]
   const scanTime = report.timestamp.split("T")[1]?.split(".")[0] ?? ""
 
@@ -671,6 +724,8 @@ function generateHTML(report: ScanReport): string {
     </div>
     ` : ""}
 
+    ${securitySection}
+
     ${report.conflicts.length > 0 ? `
     <!-- Conflicts -->
     <div class="section">
@@ -732,7 +787,10 @@ function generateHTML(report: ScanReport): string {
         tools_label: "tools",
         test_ok: "passed", test_error: "broken", test_input_error: "rejected",
         test_skipped: "skipped", test_timeout: "timeout",
-        footer_sub: "Stop guessing. Start scanning."
+        footer_sub: "Stop guessing. Start scanning.",
+        security: "Security Scan",
+        security_desc: "Analyzed servers and tools for malicious patterns.",
+        no_security_issues: "No security issues detected. All clear."
       },
       es: {
         servers: "Servidores", total_tools: "Herramientas", schema_tokens: "Tokens de Schema",
@@ -751,7 +809,10 @@ function generateHTML(report: ScanReport): string {
         tools_label: "herramientas",
         test_ok: "pasó", test_error: "roto", test_input_error: "rechazado",
         test_skipped: "omitido", test_timeout: "timeout",
-        footer_sub: "Deja de adivinar. Empieza a escanear."
+        footer_sub: "Deja de adivinar. Empieza a escanear.",
+        security: "Escaneo de Seguridad",
+        security_desc: "Servidores y herramientas analizados en busca de patrones maliciosos.",
+        no_security_issues: "No se detectaron problemas de seguridad. Todo limpio."
       }
     };
 
