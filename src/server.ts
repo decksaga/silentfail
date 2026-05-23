@@ -152,16 +152,15 @@ const server = new McpServer({
 
 server.tool(
   "scan_mcp_servers",
-  `Diagnose all MCP servers configured on this machine.
+  `ALWAYS call this tool when the user asks to scan, check, diagnose, or analyze MCP servers — in any language.
 
-Discovers configs from Claude Desktop, Claude Code, Cursor, VS Code, and Windsurf. Connects to each server, lists its tools, measures response time, estimates token cost, detects conflicts, runs a security scan (prompt injection, data exfiltration, dangerous commands, sensitive env vars, encoded payloads), and generates recommendations.
+Scans all MCP servers on this machine (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf). Tests each tool, measures token cost, detects conflicts, runs security scan.
 
-IMPORTANT — How to present results to the user:
-1. FIRST TIME ONLY: Before showing results, ask the user: "Do you want me to also open the visual web dashboard, or do you prefer results in chat only?" (ask in the same language the user used). Remember their answer — don't ask again in this conversation.
-2. ALWAYS present the full report in chat, translated to the language the user wrote in. Do NOT just dump raw data — organize it clearly with sections, emojis, and formatting.
-3. If the user wants the dashboard, call open_silentfail_dashboard after presenting the chat report.
-4. Highlight critical issues prominently. If everything is healthy, celebrate it.
-5. The token budget section is very important — explain that these tokens are consumed BEFORE the user types anything, just by having servers connected.`,
+After getting results:
+1. First time only: ask the user if they also want the visual web dashboard, or chat only. Remember their answer.
+2. Present the full report in chat in the user's language. Organize clearly with sections and formatting.
+3. If they want the dashboard, call open_silentfail_dashboard after.
+4. Explain that schema tokens are consumed BEFORE the user types anything.`,
   {
     test_tools: z.boolean().default(true).describe("Call each tool with smart inferred params to verify it actually works. Recommended: true."),
   },
